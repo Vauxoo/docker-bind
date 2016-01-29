@@ -1,0 +1,14 @@
+- hosts: local
+  tasks:
+    - name: Start a new bind container
+      docker:
+        image: "sameersbn/bind:latest"
+        name: "dns_server"
+        hostname: "host_name"
+        memory_limit: "{{ memory_limit|default('512MB') }}"
+        ports:
+          - "10000:10000"
+          - "53:53/udp"
+        env: "ROOT_PASSWORD=root_pass"
+        volumes:
+          - "/srv/dns_data:/data"
